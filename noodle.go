@@ -16,7 +16,7 @@ func main() {
 	}
 	defer sox.Quit()
 
-	in := sox.OpenRead("null")
+	in := sox.OpenRead("test-input.wav")
 	if in == nil {
 		log.Fatal("Failed to open test-input.wav")
 	}
@@ -33,12 +33,12 @@ func main() {
 
 	e := sox.CreateEffect(sox.FindEffect("synth"))
 	e.Options(in)
-	chain.AddEffect(e, in.Signal(), in.Signal())
-	e.Free()
+	chain.Add(e, in.Signal(), in.Signal())
+	//e.Free()
 
-	chain.FlowEffects()
+	chain.Flow()
 
-	chain.Delete()
-	out.Close()
-	in.Close()
+	//	chain.Delete()
+	//	out.Close()
+	//	in.Close()
 }
