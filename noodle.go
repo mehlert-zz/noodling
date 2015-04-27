@@ -6,9 +6,9 @@ import "log"
 // Attempting to get a sox 'null' filestream open and apply the synth effect
 // This spits out some undefined errors
 // It's late and we must rest though, so here it lie for now
-// TODO resolve the undefined errors
+// TODO
 //      apply some other effects
-//
+//      get synth stream to work
 
 func main() {
 	if !sox.Init() {
@@ -21,7 +21,7 @@ func main() {
 		log.Fatal("Failed to open test-input.wav")
 	}
 
-	out := sox.OpenWrite("default", in.Signal(), nil, "alsa")
+	out := sox.OpenWrite("default", in.Signal(), nil, "pulseaudio")
 	if out == nil {
 		out = sox.OpenWrite("default", in.Signal(), nil, "pulseaudio")
 		if out == nil {
@@ -31,7 +31,7 @@ func main() {
 
 	chain := sox.CreateEffectsChain(in.Encoding(), out.Encoding())
 
-	e := sox.CreateEffect(sox.FindEffect("synth"))
+	e := sox.CreateEffect(sox.FindEffect("flanger"))
 	e.Options(in)
 	chain.Add(e, in.Signal(), in.Signal())
 	//e.Free()
